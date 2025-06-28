@@ -26,7 +26,7 @@ const loadCategories = () => {
 };
 
 // LoadVideos section
-const loadVideos = (searchText) => {
+const loadVideos = (searchText ="") => {
   fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
     .then((res) => res.json())
     .then((data) => displayVideos(data.videos))
@@ -61,7 +61,7 @@ const displayDetails = (video) =>{
     const detailContainer = document.getElementById("modal-content");
 
     detailContainer.innerHTML = `
-    <img src=${video.thumbnail} />
+    <img class="w-full" src=${video.thumbnail} />
     <p>${video.description}</p>
     `
 
