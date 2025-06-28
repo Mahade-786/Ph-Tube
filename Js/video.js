@@ -26,8 +26,8 @@ const loadCategories = () => {
 };
 
 // LoadVideos section
-const loadVideos = () => {
-  fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
+const loadVideos = (searchText) => {
+  fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
     .then((res) => res.json())
     .then((data) => displayVideos(data.videos))
     .catch((err) => console.log(err));
@@ -48,6 +48,29 @@ const loadCategoryVideos = (id) =>{
     })
     .catch((err) => console.log(err));
 };
+
+const loadVideoDetails = async(videoId) =>{
+  // console.log(videoId);
+  const uri = `https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`;
+  const res = await fetch(uri);
+  const data = await res.json();
+  displayDetails(data.video);
+};
+
+const displayDetails = (video) =>{
+    const detailContainer = document.getElementById("modal-content");
+
+    detailContainer.innerHTML = `
+    <img src=${video.thumbnail} />
+    <p>${video.description}</p>
+    `
+
+    // way-1
+    // document.getElementById("showModalData").click();
+
+    // way-2
+    document.getElementById("customModal").showModal();
+}
 
 // const cardDemo = {
 //     "category_id": "1003",
@@ -116,7 +139,7 @@ const displayVideos = (videos) => {
 `
         : ""}
     </div>
-    <p></p>
+    <p><button onclick="loadVideoDetails('${video.video_id}')" class="btn btn-sm btn-error text-white font-bold">Details</button></p>
     </div>
   </div>
     `;
@@ -142,6 +165,10 @@ const displayCategories = (categories) => {
     categoryContainer.append(buttonContainer);
   });
 };
+
+document.getElementById("search-input").addEventListener("keyup", (event) =>{
+  loadVideos(event.target.value);
+})
 
 // function call
 
